@@ -1,6 +1,8 @@
 import os
 import glob
 import time
+from datetime import datetime, date
+
 
 os.system('modprobe w1-gpio')
 os.system('modprobe w1-therm')
@@ -28,6 +30,8 @@ def read_temp():
         return temp_c, temp_f
 
 while True:
-	print(read_temp())
-	time.sleep(1)
-	
+    print(read_temp())
+    f = open("temp.svc", "a")
+    f.write(datetime.datetime.now()+";"+temp_c)
+    f.close()
+    time.sleep(1)
