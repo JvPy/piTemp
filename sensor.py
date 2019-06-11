@@ -29,8 +29,8 @@ def read_temp():
         return str(temp_c)
 
 while True:
-    print([*] + read_temp() + C)
+    print("[*] " + read_temp() + " C")
     f = open("temp.svc", "a")
-    f.write(datetime.datetime.now()+" ; "+read_temp()+"\n")
+    f.write(str(datetime.now())+" ; "+read_temp()+"\n")
     f.close()
     time.sleep(1)
