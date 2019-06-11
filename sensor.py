@@ -26,12 +26,11 @@ def read_temp():
     if equals_pos != -1:
         temp_string = lines[1][equals_pos+2:]
         temp_c = float(temp_string) / 1000.0
-        temp_f = temp_c * 9.0 / 5.0 + 32.0
-        return temp_c, temp_f
+        return str(temp_c)
 
 while True:
-    print(read_temp())
+    print("[*] " + read_temp() + " C")
     f = open("temp.svc", "a")
-    f.write(datetime.datetime.now()+";"+temp_c)
+    f.write(str(datetime.now())+" ; "+read_temp()+"\n")
     f.close()
     time.sleep(1)
