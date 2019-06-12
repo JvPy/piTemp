@@ -3,22 +3,25 @@ import glob
 import time
 from datetime import datetime, date
 
-
 os.system('modprobe w1-gpio')
 os.system('modprobe w1-therm')
 
 base_dir = '/sys/bus/w1/devices/'
-device_folder = glob.glob(base_dir + '28*')[0]
-device_file = device_folder + '/w1_slave'
+device_folder0 = glob.glob(base_dir + '28*')[0]
+device_folder1 = glob.glob(base_dir + '28*')[1]
+#s3 = glob.glob(base_dir + '28*')[0]
+device_file0 = device_folder0 + '/w1_slave'
+device_file1 = device_folder1 + '/w1_slave'
+#device_file0 = device_folder0 + '/w1_slave'
 
-def read_temp_raw():
-    f = open(device_file, 'r')
+def read_temp_raw(sensorNumber):
+    f = open(eval(sensorNumber), 'r')
     lines = f.readlines()
     f.close()
     return lines
 
-def read_temp():
-    lines = read_temp_raw()
+def read_temp(sensorNumber):
+    lines = read_temp_raw(sensorNumber)
     while lines[0].strip()[-3:] != 'YES':
         time.sleep(0.2)
         lines = read_temp_raw()
@@ -29,8 +32,10 @@ def read_temp():
         return str(temp_c)
 
 while True:
-    print("[*] " + read_temp() + " C")
-    f = open("temp.svc", "a")
-    f.write(str(datetime.now())+" ; "+read_temp()+"\n")
-    f.close()
-    time.sleep(1)
+    for sensorNumber in range(2):
+        sensor = "device_file"+str(sensorNumber)
+        tempRead = read_temp(sensor)
+        print("[*] Sensor " + str(sensorNumber) + " :"  + tempRead + " C")
+        f = open("temp.csv", "a")
+        f.write(str(sensorNumber) + ";" + str(datetime.now()) + ";" + tempRead+"\n")
+        f.close()
