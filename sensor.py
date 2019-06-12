@@ -32,10 +32,8 @@ def read_temp(sensorNumber):
         return str(temp_c)
 
 while True:
-    for sensorNumber in range(2):
-        sensor = "device_file"+str(sensorNumber)
-        tempRead = read_temp(sensor)
-        print("[*] Sensor " + str(sensorNumber) + " :"  + tempRead + " C")
-        f = open("temp.csv", "a")
-        f.write(str(sensorNumber) + ";" + str(datetime.now()) + ";" + tempRead+"\n")
-        f.close()
+    print("[*] " + read_temp() + " C")
+    f = open("temp.svc", "a")
+    f.write(str(datetime.now())+" ; "+read_temp()+"\n")
+    f.close()
+    time.sleep(1)
